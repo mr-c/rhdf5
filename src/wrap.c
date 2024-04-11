@@ -16,6 +16,7 @@
 #include "H5S.h"
 #include "H5T.h"
 #include "H5P.h"
+#include "H5PL.h"
 #include "H5Z.h"
 #include "h5ls.h"
 #include "HandleList.h"
@@ -335,6 +336,8 @@ static R_CallMethodDef libraryRCalls[] = {
   {"_h5listOpenObjects", (DL_FUNC) &_h5listOpenObjects, 1},
   {"_h5getEnumNames", (DL_FUNC) &_h5getEnumNames, 1},
   {"_h5getEnumValues", (DL_FUNC) &_h5getEnumValues, 1},
+  {"_H5PLprepend", (DL_FUNC) &_H5PLprepend, 1},
+  {"_H5PLsize", (DL_FUNC) &_H5PLsize, 0},
 #ifdef _H5P_filters
   {"_H5Pset_lzf", (DL_FUNC) &_H5Pset_lzf, 2},
   {"_H5Pset_bzip2", (DL_FUNC) &_H5Pset_bzip2, 2},
