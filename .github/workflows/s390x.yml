@@ -53,7 +53,7 @@ jobs:
             Rscript -e "install.packages(c('remotes', 'BiocManager'))" \
                     -e "library(remotes)" \
                     -e "pkgs <- remotes::dev_package_deps('/build/${PKG}', dependencies = TRUE)" \
-                    -e "BiocManager::install(pkgs$package, update = TRUE, ask = FALSE)"
+                    -e 'BiocManager::install(pkgs$package, update = TRUE, ask = FALSE)'
             
   check-s390x:
     name: Test package on s390x
