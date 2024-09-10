@@ -42,7 +42,7 @@ jobs:
         with:
           image: s390x/r-base:latest
           options: |
-            --platform linux/arm64
+            --platform linux/s390x
             -v ${{ runner.temp }}/R-lib:/R-lib
             -v ${{ github.workspace }}/../:/build
             --env R_LIBS_USER=/R-lib
