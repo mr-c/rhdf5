@@ -52,7 +52,7 @@ jobs:
             echo "options(Ncpus=4L, timeout = 300)" >> ~/.Rprofile
             Rscript -e "install.packages(c('remotes', 'BiocManager'))" \
                     -e "library(remotes)" \
-                    -e "pkgs <- remotes::dev_package_deps('/build/${PKG}', dependencies = TRUE) \
+                    -e "pkgs <- remotes::dev_package_deps('/build/${PKG}', dependencies = TRUE)" \
                     -e "remotes::update(pkgs, upgrade = 'always')" \
                     -e "BiocManager::install(pkgs$package, update = TRUE, ask = FALSE)"
             
