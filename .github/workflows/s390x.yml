@@ -118,7 +118,7 @@ jobs:
       - name: R CMD check
         uses: addnab/docker-run-action@v3
         with:
-          image: s390x/r-base:latest4
+          image: s390x/r-base:latest
           options: |
             --platform linux/s390x
             -v ${{ runner.temp }}/R-lib:/R-lib
