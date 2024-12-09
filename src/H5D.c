@@ -53,6 +53,36 @@ for (int li = 0, lj = 0; li < LENGTH(FROM); li++) {               \
 FROM = to;                                                        \
 } while(0)
   
+/* 
+ * re-implementation of macro above, for STRSXP 
+ * This used to use the STRING_PTR operator, which was made a 
+ * non-API function in R-4.5.0 
+ */
+SEXP PERMUTE_STRSXP(SEXP FROM, hid_t DIM_SPACE_ID) {
+  SEXP to = PROTECT(allocVector(STRSXP, LENGTH(FROM))); 
+  int rank, *iip, *stride;  
+  int itmp;                                                   
+  hsize_t *dims;                                                    
+  permute_setup(DIM_SPACE_ID, &rank, &dims, &iip, &stride);     
+  
+  for (int li = 0, lj = 0; li < LENGTH(FROM); li++) {        
+    SET_STRING_ELT(to, li, STRING_ELT(FROM, lj));
+    
+    for (itmp = 0; itmp < rank; itmp++) {                       
+      if (iip[itmp] == dims[itmp] - 1)                          
+        iip[itmp] = 0;                                          
+      else {                                                    
+        iip[itmp]++;                                            
+        break;                                                  
+      }                                                         
+    }                                                           
+    for (lj = 0, itmp = 0; itmp < rank; itmp++)                 
+      lj += iip[itmp] * stride[itmp];
+  }
+  
+  return(to);
+}
+  
 /* hid_t H5Dcreate( hid_t loc_id, const char *name, hid_t dtype_id, hid_t space_id, hid_t lcpl_id, hid_t dcpl_id, hid_t dapl_id ) */
 SEXP _H5Dcreate( SEXP _loc_id, SEXP _name, SEXP _dtype_id, SEXP _space_id, SEXP _lcpl_id, SEXP _dcpl_id, SEXP _dapl_id ) {
 
@@ -457,8 +487,9 @@ SEXP H5Dread_helper_STRING(hid_t dataset_id, hid_t file_space_id, hid_t mem_spac
               SET_STRING_ELT(Rval, i, mkChar(bufSTR2));
           }
       }
-      if (native)
-          PERMUTE(Rval, STRING_PTR, mem_space_id);
+      if (native) {
+        Rval = PERMUTE_STRSXP(Rval, mem_space_id);
+      }
       setAttrib(Rval, R_DimSymbol, Rdim);
     }
     UNPROTECT( 1 + native );
@@ -1077,7 +1108,7 @@ SEXP _H5Dwrite( SEXP _dataset_id, SEXP _buf, SEXP _file_space_id, SEXP _mem_spac
     case STRSXP :
         mem_type_id = H5Dget_type(dataset_id);
         if (native)
-            PERMUTE(_buf, STRING_PTR, dim_space_id);
+            _buf = PERMUTE_STRSXP(_buf, dim_space_id);
 
         buf = read_string_datatype(mem_type_id, _buf);
 
