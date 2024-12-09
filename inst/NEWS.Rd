@@ -3,12 +3,21 @@
 
 \section{Changes in version 2.52.0}{
 
+  \subsection{CHANGES}{
+    \itemize{
+      \item Removed used of the non-API `STRING_PTR` function when permuting
+      string datasets.
+    }
+  }
+
   \subsection{Bug fixes}{
     \itemize{
       \item Fixed overflow when trying to write a large number of very long
       strings.  Backported to 2.50.1. 
       (Thanks to Aaron Lun @LTLA for reporting this
       https://github.com/grimbough/rhdf5/issues/151).
+    }
+  }
 }
 
 \section{Changes in version 2.48.0}{
