@@ -17,7 +17,7 @@ jobs:
     
     steps:
       - name: checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
@@ -66,7 +66,7 @@ jobs:
     steps:
 
       - name: checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Make R library
         run: mkdir -p ${RUNNER_TEMP}/R-lib
@@ -152,7 +152,7 @@ jobs:
             R CMD INSTALL --build --library=${PKG}.buildbin-libdir ${PKG}*.tar.gz
             ls -l
 
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: my-artifact
